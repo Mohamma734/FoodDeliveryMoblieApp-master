@@ -1,120 +1,13 @@
-name: Java Builds (Linux, macOS, Windows, APK)
+name: Build APK
 
 on:
   push:
-    branches:
-      - master
-      - main
+    branches: [master, main]
   pull_request:
-    branches:
-      - master
-      - main
+    branches: [master, main]
   workflow_dispatch:
 
-env:
-  JAVA_VERSION: 21
-  GRADLE_VERSION: 8.1
-
 jobs:
-  build-linux:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Grant full permissions
-      run: chmod -R 777 .
-
-    - name: Setup Java JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: ${{ env.JAVA_VERSION }}
-
-    - name: Update Gradle Wrapper
-      run: |
-        chmod +x gradlew
-        ./gradlew wrapper --gradle-version $GRADLE_VERSION
-
-    - name: Build Java Project
-      run: |
-        ./gradlew build --stacktrace
-
-    - name: Upload Linux Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: linux-build-artifact
-        path: build/libs
-        if-no-files-found: warn
-        overwrite: false
-
-  build-macos:
-    runs-on: macos-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Grant full permissions
-      run: chmod -R 777 .
-
-    - name: Setup Java JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: ${{ env.JAVA_VERSION }}
-
-    - name: Update Gradle Wrapper
-      run: |
-        chmod +x gradlew
-        ./gradlew wrapper --gradle-version $GRADLE_VERSION
-
-    - name: Build Java Project
-      run: |
-        ./gradlew build --stacktrace
-
-    - name: Upload macOS Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: macos-build-artifact
-        path: build/libs
-        if-no-files-found: warn
-        overwrite: false
-
-  build-windows:
-    runs-on: windows-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Grant full permissions
-      run: chmod -R 777 .
-
-    - name: Setup Java JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: ${{ env.JAVA_VERSION }}
-
-    - name: Update Gradle Wrapper
-      run: |
-        chmod +x gradlew
-        ./gradlew wrapper --gradle-version $GRADLE_VERSION
-
-    - name: Build Java Project
-      run: |
-        ./gradlew build --stacktrace
-
-    - name: Upload Windows Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: windows-build-artifact
-        path: build/libs
-        if-no-files-found: warn
-        overwrite: false
-
   build-apk:
     runs-on: ubuntu-latest
 
@@ -122,31 +15,23 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Grant full permissions
-      run: chmod -R 777 .
-
-    - name: Setup Java JDK
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: ${{ env.JAVA_VERSION }}
+        java-version: 17
 
     - name: Setup Android SDK
-      uses: android-actions/setup-android@v2
+      uses: android-actions/setup-android@v3
 
-    - name: Update Gradle Wrapper
-      run: |
-        chmod +x gradlew
-        ./gradlew wrapper --gradle-version $GRADLE_VERSION
+    - name: Accept Android Licenses
+      run: yes | sdkmanager --licenses
 
-    - name: Build APK
-      run: |
-        ./gradlew assembleRelease --stacktrace
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug
 
-    - name: Upload APK Artifact
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: apk-build-artifact
-        path: app/build/outputs/apk/release/
-        if-no-files-found: warn
-        overwrite: false
+        name: app-debug
+        path: app/build/outputs/apk/debug/*.apk
