@@ -22,14 +22,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Grant full permissions to all files
+      run: chmod -R 777 .
+
     - name: Setup Java JDK
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: ${{ env.JAVA_VERSION }}
-
-    - name: Grant execution permission to Gradle wrapper
-      run: chmod +x gradlew
 
     - name: Build Java Project
       run: |
@@ -50,14 +50,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Grant full permissions to all files
+      run: chmod -R 777 .
+
     - name: Setup Java JDK
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: ${{ env.JAVA_VERSION }}
-
-    - name: Grant execution permission to Gradle wrapper
-      run: chmod +x gradlew
 
     - name: Build Java Project
       run: |
@@ -78,14 +78,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Grant full permissions to all files
+      run: chmod -R 777 .
+
     - name: Setup Java JDK
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: ${{ env.JAVA_VERSION }}
-
-    - name: Grant execution permission to Gradle wrapper
-      run: chmod +x gradlew
 
     - name: Build Java Project
       run: |
@@ -106,6 +106,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Grant full permissions to all files
+      run: chmod -R 777 .
+
     - name: Setup Java JDK
       uses: actions/setup-java@v4
       with:
@@ -114,9 +117,6 @@ jobs:
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
-
-    - name: Grant execution permission to Gradle wrapper
-      run: chmod +x gradlew
 
     - name: Build APK
       run: |
