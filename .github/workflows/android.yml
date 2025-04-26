@@ -28,6 +28,9 @@ jobs:
         distribution: 'temurin'
         java-version: ${{ env.JAVA_VERSION }}
 
+    - name: Grant execution permission to Gradle wrapper
+      run: chmod +x gradlew
+
     - name: Build Java Project
       run: |
         ./gradlew build
@@ -53,6 +56,9 @@ jobs:
         distribution: 'temurin'
         java-version: ${{ env.JAVA_VERSION }}
 
+    - name: Grant execution permission to Gradle wrapper
+      run: chmod +x gradlew
+
     - name: Build Java Project
       run: |
         ./gradlew build
@@ -77,6 +83,9 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: ${{ env.JAVA_VERSION }}
+
+    - name: Grant execution permission to Gradle wrapper
+      run: chmod +x gradlew
 
     - name: Build Java Project
       run: |
@@ -105,6 +114,9 @@ jobs:
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
+
+    - name: Grant execution permission to Gradle wrapper
+      run: chmod +x gradlew
 
     - name: Build APK
       run: |
