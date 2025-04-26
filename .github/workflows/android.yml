@@ -13,6 +13,7 @@ on:
 
 env:
   JAVA_VERSION: 21
+  GRADLE_VERSION: 8.1
 
 jobs:
   build-linux:
@@ -22,7 +23,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Grant full permissions to all files
+    - name: Grant full permissions
       run: chmod -R 777 .
 
     - name: Setup Java JDK
@@ -31,9 +32,14 @@ jobs:
         distribution: 'temurin'
         java-version: ${{ env.JAVA_VERSION }}
 
+    - name: Update Gradle Wrapper
+      run: |
+        chmod +x gradlew
+        ./gradlew wrapper --gradle-version $GRADLE_VERSION
+
     - name: Build Java Project
       run: |
-        ./gradlew build
+        ./gradlew build --stacktrace
 
     - name: Upload Linux Artifact
       uses: actions/upload-artifact@v4
@@ -50,7 +56,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Grant full permissions to all files
+    - name: Grant full permissions
       run: chmod -R 777 .
 
     - name: Setup Java JDK
@@ -59,9 +65,14 @@ jobs:
         distribution: 'temurin'
         java-version: ${{ env.JAVA_VERSION }}
 
+    - name: Update Gradle Wrapper
+      run: |
+        chmod +x gradlew
+        ./gradlew wrapper --gradle-version $GRADLE_VERSION
+
     - name: Build Java Project
       run: |
-        ./gradlew build
+        ./gradlew build --stacktrace
 
     - name: Upload macOS Artifact
       uses: actions/upload-artifact@v4
@@ -78,7 +89,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Grant full permissions to all files
+    - name: Grant full permissions
       run: chmod -R 777 .
 
     - name: Setup Java JDK
@@ -87,9 +98,14 @@ jobs:
         distribution: 'temurin'
         java-version: ${{ env.JAVA_VERSION }}
 
+    - name: Update Gradle Wrapper
+      run: |
+        chmod +x gradlew
+        ./gradlew wrapper --gradle-version $GRADLE_VERSION
+
     - name: Build Java Project
       run: |
-        ./gradlew build
+        ./gradlew build --stacktrace
 
     - name: Upload Windows Artifact
       uses: actions/upload-artifact@v4
@@ -106,7 +122,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Grant full permissions to all files
+    - name: Grant full permissions
       run: chmod -R 777 .
 
     - name: Setup Java JDK
@@ -118,9 +134,14 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
 
+    - name: Update Gradle Wrapper
+      run: |
+        chmod +x gradlew
+        ./gradlew wrapper --gradle-version $GRADLE_VERSION
+
     - name: Build APK
       run: |
-        ./gradlew assembleRelease
+        ./gradlew assembleRelease --stacktrace
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
